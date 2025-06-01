@@ -14,9 +14,9 @@
             align-items: center;
             min-height: 100vh; /* Altura mínima para centralizar verticalmente */
             margin: 0;
-            padding: 20px; /* Espaçamento nas bordas */
+            padding: 20px; /* Espaçamento nas bordas da página */
             box-sizing: border-box; /* Garante que padding não aumente o tamanho total */
-            overflow-x: hidden; /* Evita scroll horizontal caso o botão fuja demais */
+            overflow-x: hidden; /* Evita scroll horizontal desnecessário */
         }
 
         /* Container principal para o conteúdo */
@@ -29,6 +29,7 @@
             max-width: 550px; /* Largura máxima do container */
             width: 100%; /* Ocupa a largura disponível até o máximo */
             border: 2px solid #ffb3c6; /* Borda rosa claro */
+            box-sizing: border-box;
         }
 
         /* Estilo para o título principal */
@@ -48,13 +49,13 @@
 
         /* Container para os botões de Sim e Não */
         .botoes-container {
-            display: flex; /* Organiza os botões lado a lado */
+            display: flex; /* Organiza os botões lado a lado por padrão */
             justify-content: center; /* Centraliza os botões */
             align-items: center; /* Alinha os botões verticalmente */
             gap: 20px; /* Espaço entre os botões */
             margin-bottom: 30px;
-            position: relative; /* Necessário para posicionar o botão "Não" absolutamente dentro dele */
-            min-height: 60px; /* Altura mínima para evitar que o botão "Não" saia da área visível ao mover */
+            position: relative; /* Necessário para posicionar o botão "Não" absolutamente */
+            min-height: 60px; /* Altura mínima para os botões */
         }
 
         /* Estilo base para os botões */
@@ -66,7 +67,7 @@
             font-weight: bold;
             border-radius: 12px; /* Bordas arredondadas para os botões */
             cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.3s ease; /* Transições suaves */
+            transition: transform 0.2s ease, background-color 0.3s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -83,13 +84,11 @@
         /* Estilo específico para o botão "Não" */
         .nao-btn {
             background-color: #f06292; /* Rosa um pouco mais claro */
-            position: absolute; /* Permite mover o botão com JavaScript */
-            /* Inicialmente, o JavaScript definirá a posição */
+            position: absolute; /* Permite mover o botão com JavaScript em telas maiores */
         }
 
         .nao-btn:hover {
             background-color: #ec407a;
-            /* A transformação no hover pode ser removida se o movimento for no clique */
         }
 
         /* Estilo para o botão do WhatsApp */
@@ -120,48 +119,62 @@
             margin: 30px 0;
         }
 
-        /* Efeito de coração pulsante (opcional) */
+        /* Efeito de coração pulsante */
         .heart {
             color: #e91e63;
             animation: pulse 1.5s infinite;
-            font-size: 1.5em;
+            font-size: 1.2em; /* Ajustado para não ser tão grande quanto o texto */
             display: inline-block;
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
 
-        /* Responsividade: Ajustes para telas menores */
+        /* --- Media Queries para Responsividade --- */
         @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Menor padding na página em telas pequenas */
+            }
             .container {
-                padding: 20px;
-                margin: 10px;
+                padding: 20px; /* Menor padding interno no container */
+                margin: 10px 0; /* Margem para não colar nas bordas */
             }
             h1 {
-                font-size: 1.8em;
+                font-size: 1.8em; /* Tamanho de fonte menor para o título */
             }
             p {
-                font-size: 1.1em;
-            }
-            button {
-                padding: 10px 20px;
-                font-size: 1em;
+                font-size: 1.05em; /* Tamanho de fonte menor para parágrafos */
+                margin-bottom: 20px;
             }
             .botoes-container {
-                flex-direction: column; /* Empilha os botões em telas pequenas */
-                gap: 15px;
-                min-height: 120px; /* Ajusta altura para botões empilhados */
+                flex-direction: column; /* Empilha os botões */
+                gap: 15px; /* Espaço entre botões empilhados */
+                min-height: auto; /* Altura automática, já que o "Não" não se move */
+                align-items: center; /* Centraliza os botões na coluna */
             }
+            
+            /* Estilo para todos os botões dentro do .botoes-container em mobile */
+            .botoes-container button {
+                width: 80%; /* Largura dos botões */
+                max-width: 280px; /* Largura máxima */
+                padding: 12px 15px; /* Padding ajustado */
+                font-size: 1em; /* Tamanho da fonte ajustado */
+            }
+
             .nao-btn {
-                position: static; /* Em telas pequenas, o botão "Não" pode ficar estático para melhor usabilidade */
-                                 /* Ou manter 'absolute' e ajustar a lógica de movimento */
+                position: static; /* Botão "Não" fica fixo, não absoluto */
+                /* A largura e outros estilos são herdados de .botoes-container button */
             }
+
             .whatsapp-button {
                 padding: 12px 25px;
                 font-size: 1em;
+            }
+            .heart {
+                font-size: 1.1em;
             }
         }
     </style>
@@ -198,48 +211,59 @@
         
         <div id="final" style="display: none;">
             <hr>
-            <p>Ebaaa! Fico muito feliz! <span class="heart">🎉</span><br>Me chama no WhatsApp pra gente conversar e combinar!</p>
+            <p>Ebaaa! Fico muito feliz!!! <span class="heart">🎉</span><br>Me chama no WhatsApp pra gente conversar e combinar!</p>
             <a href="https://w.app/dgxvjb" target="_blank" class="whatsapp-button">Chamar o Tiago no WhatsApp</a>
         </div>
     </div>
 
     <script>
-        // Seleciona todos os botões "Não"
         const naoButtons = [
             document.getElementById('nao1'),
             document.getElementById('nao2'),
             document.getElementById('nao3')
         ];
 
-        // Adiciona o evento de mouseover para cada botão "Não"
         naoButtons.forEach(button => {
-            if (button) { // Verifica se o botão existe
-                // Posiciona o botão "Não" inicialmente ao lado do "Sim"
-                positionNoButton(button);
-                button.addEventListener('mouseover', () => moveButton(button));
-                button.addEventListener('click', () => moveButton(button)); // Também move ao clicar
+            if (button) {
+                // Posiciona inicialmente o botão "Não" em telas maiores
+                if (window.getComputedStyle(button).position === 'absolute') {
+                    positionNoButton(button);
+                }
+                // Adiciona eventos para mover
+                button.addEventListener('mouseover', () => tryMoveButton(button));
+                button.addEventListener('click', () => tryMoveButton(button)); // Também move ao clicar
             }
         });
         
-        // Função para posicionar o botão "Não" inicialmente
         function positionNoButton(noButton) {
-            const simButton = noButton.previousElementSibling; // Pega o botão "Sim" que vem antes
-            if (simButton) {
-                const container = noButton.parentElement;
-                const containerRect = container.getBoundingClientRect();
-                const simRect = simButton.getBoundingClientRect();
-                
-                // Tenta posicionar à direita do "Sim"
-                let leftPosition = simRect.right - containerRect.left + 20; // 20px de espaço
-                let topPosition = simRect.top - containerRect.top;
+            const simButton = noButton.previousElementSibling;
+            const parentContainer = noButton.parentElement; // .botoes-container
 
-                // Ajusta se sair do container
-                if (leftPosition + noButton.offsetWidth > containerRect.width) {
-                    leftPosition = simRect.left - containerRect.left - noButton.offsetWidth - 20;
-                     if (leftPosition < 0) leftPosition = 10; // Fallback se ainda não couber
+            if (simButton && parentContainer) {
+                const parentRect = parentContainer.getBoundingClientRect();
+                const simRect = simButton.getBoundingClientRect();
+                const noRect = noButton.getBoundingClientRect(); // Usar as dimensões atuais do botão "Não"
+
+                // Tenta posicionar à direita do "Sim"
+                let leftPosition = (simRect.right - parentRect.left) + 20; // 20px de espaço
+                let topPosition = (simRect.top - parentRect.top);
+
+                // Ajusta se sair do container pai (.botoes-container)
+                if (leftPosition + noRect.width > parentRect.width) {
+                    // Tenta à esquerda do "Sim"
+                    leftPosition = (simRect.left - parentRect.left) - noRect.width - 20;
                 }
-                 if (topPosition < 0) topPosition = 10;
-                 if (topPosition + noButton.offsetHeight > containerRect.height) topPosition = containerRect.height - noButton.offsetHeight - 10;
+                // Fallback se ainda não couber (coloca no início do container)
+                if (leftPosition < 0 || leftPosition + noRect.width > parentRect.width) {
+                     leftPosition = 10;
+                }
+                // Ajuste vertical simples para centralizar com o "Sim"
+                topPosition = (simRect.height - noRect.height) / 2 + (simRect.top - parentRect.top);
+                if (topPosition < 0) topPosition = 5;
+                if (topPosition + noRect.height > parentRect.height) {
+                    topPosition = parentRect.height - noRect.height - 5;
+                }
+                 if (topPosition < 0) topPosition = 0;
 
 
                 noButton.style.left = leftPosition + 'px';
@@ -247,52 +271,63 @@
             }
         }
 
-
-        // Função para mover o botão "Não"
-        function moveButton(button) {
-            const container = document.querySelector('.container'); // O container principal da página
-            const containerRect = container.getBoundingClientRect();
-            const buttonRect = button.getBoundingClientRect();
-
-            // Calcula novas posições aleatórias dentro dos limites do container
-            // Subtrai a largura/altura do botão para que ele não saia parcialmente para fora
-            let newLeft = Math.random() * (containerRect.width - buttonRect.width);
-            let newTop = Math.random() * (containerRect.height - buttonRect.height);
-
-            // Garante que o botão não vá para posições negativas (caso o container seja o body)
-            newLeft = Math.max(0, newLeft);
-            newTop = Math.max(0, newTop);
-            
-            button.style.left = newLeft + 'px';
-            button.style.top = newTop + 'px';
+        function tryMoveButton(button) {
+            // Só move se a posição computada do botão for 'absolute'
+            if (window.getComputedStyle(button).position === 'absolute') {
+                moveButton(button);
+            }
         }
 
-        // Função para lidar com as respostas "Sim"
+        function moveButton(button) {
+            const parentContainer = button.parentElement; // .botoes-container
+            if (!parentContainer) return;
+
+            const parentRect = parentContainer.getBoundingClientRect();
+            const buttonRect = button.getBoundingClientRect();
+
+            // Calcula novas posições aleatórias dentro dos limites do PARENT container
+            let newLeft = Math.random() * (parentRect.width - buttonRect.width);
+            let newTop = Math.random() * (parentRect.height - buttonRect.height);
+            
+            button.style.left = Math.max(0, newLeft) + 'px';
+            button.style.top = Math.max(0, newTop) + 'px';
+        }
+
         function responderSim(perguntaNumero) {
             const perguntaAtual = document.getElementById('pergunta' + perguntaNumero);
             const proximaPergunta = document.getElementById('pergunta' + (perguntaNumero + 1));
             const finalDiv = document.getElementById('final');
 
             if (perguntaAtual) {
-                perguntaAtual.style.display = 'none'; // Esconde a pergunta atual
+                perguntaAtual.style.display = 'none';
             }
 
             if (proximaPergunta) {
-                proximaPergunta.style.display = 'block'; // Mostra a próxima pergunta
-                // Reposiciona o botão "Não" da próxima pergunta
+                proximaPergunta.style.display = 'block';
                 const proximoNaoBtn = document.getElementById('nao' + (perguntaNumero + 1));
-                if(proximoNaoBtn) positionNoButton(proximoNaoBtn);
+                if(proximoNaoBtn && window.getComputedStyle(proximoNaoBtn).position === 'absolute') {
+                    positionNoButton(proximoNaoBtn); // Reposiciona o próximo botão "Não" se estiver absoluto
+                }
             } else {
-                // Se não houver próxima pergunta, mostra a mensagem final
                 if(finalDiv) finalDiv.style.display = 'block';
             }
         }
 
-        // Garante que os botões "Não" sejam reposicionados se a janela for redimensionada
         window.addEventListener('resize', () => {
             naoButtons.forEach(button => {
-                if (button && button.parentElement.style.display !== 'none') { // Só reposiciona se estiver visível
-                   positionNoButton(button);
+                if (!button || !button.parentElement || !button.parentElement.parentElement) return;
+
+                const questionContainer = button.parentElement.parentElement;
+                const questionStyle = window.getComputedStyle(questionContainer);
+                const buttonStyle = window.getComputedStyle(button);
+
+                if (questionStyle.display !== 'none') { // Se a pergunta estiver visível
+                    if (buttonStyle.position === 'absolute') { // Se o botão for absoluto (desktop)
+                       positionNoButton(button);
+                    } else { // Se o botão for estático (mobile), limpa left/top inline
+                        button.style.left = '';
+                        button.style.top = '';
+                    }
                 }
             });
         });
